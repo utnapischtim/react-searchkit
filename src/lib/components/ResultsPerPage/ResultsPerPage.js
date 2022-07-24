@@ -36,6 +36,7 @@ class ResultsPerPage extends Component {
       overridableId,
       ariaLabel,
       selectOnNavigation,
+      endpoint,
     } = this.props;
     return (
       <ShouldRender condition={!loading && totalResults > 0 && currentSize !== -1}>
@@ -47,6 +48,7 @@ class ResultsPerPage extends Component {
             overridableId={overridableId}
             ariaLabel={ariaLabel}
             selectOnNavigation={selectOnNavigation}
+            endpoint={endpoint}
           />
         )}
       </ShouldRender>
@@ -81,6 +83,7 @@ const Element = ({
   onValueChange,
   ariaLabel,
   selectOnNavigation,
+  endpoint,
 }) => {
   const { buildUID } = useContext(AppContext);
   const _options = options.map((element, index) => {

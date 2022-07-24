@@ -13,10 +13,10 @@ import { Item } from "semantic-ui-react";
 import { AppContext } from "../ReactSearchKit";
 import { ShouldRender } from "../ShouldRender";
 
-function ResultsList({ loading, totalResults, results, overridableId }) {
+function ResultsList({ endpoint, loading, totalResults, results, overridableId }) {
   return (
     <ShouldRender condition={!loading && totalResults > 0}>
-      <Element results={results} overridableId={overridableId} />
+      <Element results={results} overridableId={overridableId} endpoint={endpoint} />
     </ShouldRender>
   );
 }
@@ -33,11 +33,15 @@ ResultsList.defaultProps = {
   overridableId: "",
 };
 
-const ListItem = ({ result, overridableId }) => {
+const ListItem = ({ endpoint, result, overridableId }) => {
   const { buildUID } = useContext(AppContext);
 
   return (
-    <Overridable id={buildUID("ResultsList.item", overridableId)} result={result}>
+    <Overridable
+      id={buildUID("ResultsList.item", overridableId)}
+      result={result}
+      endpoint={endpoint}
+    >
       <Item href={`#${result.id}`}>
         <Item.Image size="small" src={result.imgSrc || "http://placehold.it/200"} />
         <Item.Content>
@@ -54,18 +58,24 @@ ListItem.propTypes = {
   overridableId: PropTypes.string.isRequired,
 };
 
-const Element = ({ results, overridableId }) => {
+const Element = ({ endpoint, results, overridableId }) => {
   const { buildUID } = useContext(AppContext);
 
   const _results = results.map((result, index) => (
     // eslint-disable-next-line react/no-array-index-key
-    <ListItem result={result} key={index} overridableId={overridableId} />
+    <ListItem
+      result={result}
+      key={index}
+      overridableId={overridableId}
+      endpoint={endpoint}
+    />
   ));
 
   return (
     <Overridable
       id={buildUID("ResultsList.container", overridableId)}
       results={_results}
+      endpoint={endpoint}
     >
       <Item.Group divided relaxed link>
         {_results}
